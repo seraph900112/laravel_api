@@ -4,6 +4,11 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
+
+
+
+    'mix_url' => env('APP_URL', 'http://localhost'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name

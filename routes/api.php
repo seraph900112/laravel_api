@@ -20,8 +20,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return 123457489484896;
 });
 
+
+
 Route::get('/login', function (Request $request) {
-    return $request->user()->createToken()->plainTextToken;
+    if (auth()->attempt(['name' => $request->name, 'password' => $request->password])) {
+        // Authentication passed...
+        $user = auth()->user();
+        //return ['origin' => $user->api_token, "request"  => $request->token];
+        if(! $request->token == $user->api_token ){
+            $user->api_token =  $user->createToken('app')->plainTextToken;
+        }
+        $user->save();
+        return $user;
+    }
+    return response()->json([
+        'error' => 'Unauthenticated user',
+        'code' => 401,
+    ], 401);
 });
 
 Route::post('/tokens/create', function (Request $request) {
