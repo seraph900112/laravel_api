@@ -10,20 +10,19 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class NewTrade implements ShouldBroadcast
+class Chat implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
-    public $trade;
+    public $chat;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($trade)
+    public function __construct($chat)
     {
-        $this->trade = $trade;
+        $this->chat = $chat;
     }
 
     /**
@@ -31,7 +30,8 @@ class NewTrade implements ShouldBroadcast
      *
      * @return \Illuminate\Broadcasting\Channel|array
      */
-    public function broadcastOn(){
-        return new Channel('trades');
+    public function broadcastOn()
+    {
+        return new Channel('chat.'.$this->chat->receive_id);
     }
 }
